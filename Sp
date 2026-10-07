@@ -1,0 +1,63 @@
+-- โหลด Fluent UI Library (เมนูสวยงาม พรีเมียม)
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.github```lua
+-- โหลด Fluent UI Library (ระบบ UI พรีเมียม)
+local Fluent = loadstring(game:HttpGet("[https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua](https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua)"))()
+
+-- สร้างหน้าต่างหลัก
+local Window = Fluent:CreateWindow({
+    Title = "Tower Defense Menu",
+    SubTitle = "by AI Assistant",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Theme = "Dark"
+})
+
+-- เพิ่ม Tab เมนูหลัก
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main/Currency", Icon = "coins" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+-- สร้างปุ่มยิง RemoteEvent เงิน
+Tabs.Main:AddButton({
+    Title = "Trigger Money Event",
+    Description = "ส่งข้อมูลขอเงินไปยังเซิร์ฟเวอร์",
+    Callback = function()
+        -- เปลี่ยนชื่อ RemoteEvent และ Argument ให้ตรงกับที่ตัวเกมนั้นๆ ใช้อยู่จริง
+        local args = {
+            [1] = 1000000 -- จำนวนเงิน
+        }
+        
+        -- ตัวอย่างการยิง Event (ต้องหาจากในเกมด้วย Dex Explorer)
+        local remote = game:GetService("ReplicatedStorage"):FindFirstChild("AddMoneyEvent", true)
+        if remote then
+            remote:FireServer(unpack(args))
+            Fluent:Notify({ Title = "Success", Content = "ยิงสัญญาณเงินเรียบร้อยแล้ว", Duration = 3 })
+        else
+            Fluent:Notify({ Title = "Error", Content = "ไม่พบ RemoteEvent ของเงินในแมพนี้", Duration = 3 })
+        end
+    end
+})
+
+-- สร้างปุ่มยิง RemoteEvent เพชร
+Tabs.Main:AddButton({
+    Title = "Trigger Gems Event",
+    Description = "ส่งข้อมูลขอเพชรไปยังเซิร์ฟเวอร์",
+    Callback = function()
+        local args = {
+            [1] = 50000 -- จำนวนเพชร
+        }
+        
+        local remote = game:GetService("ReplicatedStorage"):FindFirstChild("AddGemsEvent", true)
+        if remote then
+            remote:FireServer(unpack(args))
+            Fluent:Notify({ Title = "Success", Content = "ยิงสัญญาณเพชรเรียบร้อยแล้ว", Duration = 3 })
+        else
+            Fluent:Notify({ Title = "Error", Content = "ไม่พบ RemoteEvent ของเพชรในแมพนี้", Duration = 3 })
+        end
+    end
+})
+
+Window:SelectTab(1)
